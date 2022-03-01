@@ -1,12 +1,13 @@
 import { GET_QUESTION_DATA } from "../actionTypes";
 
-const initialState = {};
+const initialState = [];
 
 function askQuestionData(state = initialState, action) {
   if (action.type === GET_QUESTION_DATA) {
-    return action.payload.data;
+    console.log(action.data);
+    return action.data;
   }
-  return state;
+  return "Attempt to set question data failed.";
 }
 
 export default askQuestionData;
