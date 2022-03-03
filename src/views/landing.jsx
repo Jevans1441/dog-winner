@@ -12,13 +12,30 @@ const Landing = () => {
   const navigateTo = useNavigate();
 
   const [currentQuestionCount, setCurrentQuestionsCount] = useStateCallback(0);
+  const [isGameEnd, setIsGameEnd] = useState(false)
 
   useEffect(() => {
     disptach(getQuestionData());
   }, []);
 
+  const handleNavigation = (nextQuestionNum) => {
+    if (!isGameEnd && currentQuestionCount < 10) {
+      navigateTo(`q${nextQuestionNum}`)
+    }
+    if (currentQuestionCount >= 10) {
+      setIsGameEnd(true)
+    }
+  }
+
+  const handleNewGame = () => {
+    disptach(getQuestionData());
+    setIsGameEnd(false);
+    setCurrentQuestionsCount(1);
+    navigateTo('/q1')
+  }
+
   const handleClick = num => {
-    setCurrentQuestionsCount(prev => prev + 1, s => navigateTo(`q${s}`))
+    setCurrentQuestionsCount(prevState => prevState + 1, newState => handleNavigation(newState))
   }
 
 
@@ -30,7 +47,13 @@ const Landing = () => {
       <Routes>
         <Route path={`q${currentQuestionCount}`} element={<Question data={questions[currentQuestionCount -1]} />} />
       </Routes>
-      <button onClick={handleClick}>Proceed</button>
+      {!isGameEnd && <button disabled={isGameEnd} onClick={handleClick}>Proceed</button>}
+      {isGameEnd && ( 
+        <>
+          <p>Game Over</p>
+          <button onClick={handleNewGame}>New Game</button>
+        </>
+      )}
     </>
   )
 
