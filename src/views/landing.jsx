@@ -4,6 +4,8 @@ import { getQuestionData } from '../redux/actions'
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Question from "../components/question";
 import useStateCallback from '../hooks/useStateCallback'
+import Welcome from '../components/welcome';
+import Status from '../components/status';
 
 const Landing = () => {
 
@@ -42,8 +44,8 @@ const Landing = () => {
 
   return (
     <>
-      <h2>Welcome to Dog Winner</h2>
-      <p>The only game on the internet where you can win a dog for each correct answer.</p>
+      {currentQuestionCount < 1 && <Welcome />}
+      {!isGameEnd && currentQuestionCount > 0 && <Status count={currentQuestionCount} />}
       <Routes>
         <Route path={`q${currentQuestionCount}`} element={<Question data={questions[currentQuestionCount -1]} />} />
       </Routes>
