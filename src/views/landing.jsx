@@ -2,16 +2,21 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getQuestionData } from '../redux/actions'
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Question from "../components/question";
 import useStateCallback from '../hooks/useStateCallback'
 import Welcome from '../components/welcome';
 import Status from '../components/status';
+import QuestionForm from '../components/questionForm'
+import { fetchImage } from "../redux/actions";
+import Modal from "../components/modal";
 
 const Landing = () => {
 
   const disptach = useDispatch();
-  const questions = useSelector(state => state.questions);
   const navigateTo = useNavigate();
+
+  const questions = useSelector(state => state.questions);
+  const images = useSelector(state => state.images)
+
 
   const [currentQuestionCount, setCurrentQuestionsCount] = useStateCallback(0);
   const [isGameEnd, setIsGameEnd] = useState(false)
@@ -40,6 +45,14 @@ const Landing = () => {
     setCurrentQuestionsCount(prevState => prevState + 1, newState => handleNavigation(newState))
   }
 
+  const handleSubmit = (e, isCorrect) => {
+    e.preventDefault();
+    console.log(isCorrect)
+    disptach(fetchImage())
+    setTimeout(() => {
+      setCurrentQuestionsCount(prevState => prevState + 1, newState => handleNavigation(newState))
+    }, 2000);
+  };
 
 
   return (
@@ -47,18 +60,25 @@ const Landing = () => {
       {currentQuestionCount < 1 && <Welcome />}
       {!isGameEnd && currentQuestionCount > 0 && <Status count={currentQuestionCount} />}
       <Routes>
-        <Route path={`q${currentQuestionCount}`} element={<Question data={questions[currentQuestionCount -1]} />} />
+        <Route
+          element={<QuestionForm action={handleSubmit} data={questions[currentQuestionCount - 1]} />}
+          path={`q${currentQuestionCount}`}
+        />
       </Routes>
-      {!isGameEnd && <button disabled={isGameEnd} onClick={handleClick}>Proceed</button>}
+      {!isGameEnd && currentQuestionCount < 1 && (
+        <button disabled={isGameEnd} onClick={handleClick}>Start Game</button>
+      )}
       {isGameEnd && ( 
         <>
           <p>Game Over</p>
           <button onClick={handleNewGame}>New Game</button>
         </>
       )}
+      {images[currentQuestionCount - 1] && (
+        <Modal imageURL={images[currentQuestionCount - 1]} message="some message tdb" />
+      )}
     </>
   )
-
 };
 
 export default Landing; 

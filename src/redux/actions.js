@@ -1,5 +1,5 @@
 import data from "./qestiondata.json";
-import { GET_QUESTION_DATA } from "./actionTypes";
+import { SET_IMAGE, GET_QUESTION_DATA } from "./actionTypes";
 
 // Randomizes questions before they're added ot redux store
 function shuffle(array) {
@@ -22,5 +22,20 @@ export const getQuestionData = () => {
   return {
     type: GET_QUESTION_DATA,
     data: shuffle(data),
+  };
+};
+
+export const fetchImage = () => (dispatch) => {
+  fetch("https://dog.ceo/api/breeds/image/random")
+    .then((data) => data.json())
+    .then((response) => {
+      dispatch(fetchSuccess(response.message));
+    });
+};
+
+const fetchSuccess = (imageURL) => {
+  return {
+    type: SET_IMAGE,
+    imageURL,
   };
 };
