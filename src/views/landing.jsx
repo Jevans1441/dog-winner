@@ -7,6 +7,7 @@ import Welcome from '../components/welcome';
 import Status from '../components/status';
 import QuestionForm from '../components/questionForm'
 import Modal from "../components/modal";
+import GameOver from '../components/gameOver';
 
 const Landing = () => {
 
@@ -73,8 +74,7 @@ const Landing = () => {
       )}
       {isGameEnd && ( 
         <>
-          <p>Game Over</p>
-          <button onClick={handleNewGame}>New Game</button>
+          <GameOver action={handleNewGame} images={images} />
         </>
       )}
       {images[currentQuestionCount - 1] && (
