@@ -1,5 +1,6 @@
 import data from "./qestiondata.json";
 import { SET_IMAGE, GET_QUESTION_DATA } from "./actionTypes";
+import { type } from "@testing-library/user-event/dist/type";
 
 // Randomizes questions before they're added ot redux store
 function shuffle(array) {
@@ -37,5 +38,12 @@ const fetchSuccess = (imageURL) => {
   return {
     type: SET_IMAGE,
     imageURL,
+  };
+};
+
+export const setWrongImage = () => {
+  return {
+    type: SET_IMAGE,
+    imageURL: "wrong",
   };
 };

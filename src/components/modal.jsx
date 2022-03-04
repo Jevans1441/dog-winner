@@ -1,13 +1,23 @@
-const Modal = ({ imageURL, message }) => {
-    console.log(imageURL, message)
+import wrongImage from '../assets/wrong.jpg'
+
+const Modal = ({ imageURL }) => {
+
+    const WinMsg = 'You just won a dog!'
+    const loseMsg = 'Lassie can\'t come home :(.'
+
+    const image = imageURL !== 'wrong' ? imageURL : wrongImage;
+    const message = imageURL !== 'wrong' ? WinMsg : loseMsg;
+
     return (
-        <div>
-            {imageURL && (
-                <div className="image-container">
-                    <img src="{imageURL}" />
+        <div className="modal">
+            {image && (
+                <div className="modal__image-container">
+                    <img src="{image}" />
                 </div>
             )}
-            <p>{message}</p>
+            <div className="modal__message">
+                <p>{message}</p>                
+            </div>
         </div>
     )
 }
