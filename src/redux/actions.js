@@ -1,6 +1,5 @@
 import data from "./qestiondata.json";
 import { SET_IMAGE, GET_QUESTION_DATA } from "./actionTypes";
-import { type } from "@testing-library/user-event/dist/type";
 
 // Randomizes questions before they're added ot redux store
 function shuffle(array) {
